@@ -365,4 +365,6 @@ submi = customtkinter.CTkButton(
     frame, height=28, width=241, text='login', command=panel, font=('Bahnschrift SemiBold', 20))
 submi.place(x=50, y=396)
 # ---------------------------------------------
+# Creado por Eduardo Barboza Acosta 
+# Rev 2.0.0
 ventana.mainloop()
