@@ -122,51 +122,35 @@ def panel():
                 ventana_1, fg_color='#06EFB7', hover_color='#06EFB7')  # type: ignore
 
         def unpload_image():
-            try:
-                creds = get_credentials()
-                if creds is None:
-                    messagebox.showwarning(
-                        message="No se pudieron obtener las credenciales.")
-                    return
-                service = build('drive', 'v3', credentials=creds)
-                file_metadata = {'name': 'Font.png'}
-                media = MediaFileUpload(filename, mimetype='image/png')
-                file = service.files().update(fileId='160swttBUh5qnlsCxcjAG71QT-1mkmvVm',
-                                              body=file_metadata, media_body=media).execute()
-                messagebox.showinfo(
-                    message=('Imagen Enviada'+'\n'+F'File ID: {file.get("id")}'))
 
-            except HttpError as error:
-                messagebox.showwarning(
-                    message=F'An error occurred: {error}')
-                file = None
+            # Autenticación con un token de acceso
+            g = Github('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')
+
+            # Obtén una referencia al repositorio y la carpeta específica en la que deseas agregar la imagen
+            repo = g.get_user().get_repo("SaludOcup-Web-Version")
+            contents = repo.get_contents("image/font.png")
+
+            # Lee la imagen en Python
+            with open(filename, 'rb') as file:
+                content = file.read()
+
+            # Actualiza el archivo en GitHub
+            repo.update_file('image/font.png', 'imagen',
+                             content, contents.sha, branch='main')
+            # Muestra un mensaje de confirmación
+            messagebox.showinfo(message='Imagen Enviada')
 
         def unpload_form():
             form = form_unpload.get()
             fech = fecha1.get()
-            file = open('url.txt', 'w')
-            file.write('{}\n'.format(form))
-            file.write('{}'.format(fech))
-            file.close()
 
-            try:
-                creds = get_credentials()
-                if creds is None:
-                    messagebox.showwarning(
-                        message="No se pudieron obtener las credenciales.")
-                    return
-                service = build('drive', 'v3', credentials=creds)
-                file_metadata = {'name': 'LogData.txt'}
-                media = MediaFileUpload('url.txt', mimetype='text/plain')
-                file = service.files().update(fileId='1YztxY4lGbtPKDz0KPrQp11HrXhg4jXKA',
-                                              body=file_metadata, media_body=media).execute()
-                messagebox.showinfo(
-                    message=('Formulario Eviado'+'\n'+F'File ID: {file.get("id")}'))
-
-            except HttpError as error:
-                messagebox.showwarning(
-                    message=F'An error occurred: {error}')
-                file = None
+            g = Github('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')
+            repo = g.get_user().get_repo("SaludOcup-Web-Version")
+            contents = repo.get_contents("LogData/LogData.txt")
+            repo.update_file('LogData/LogData.txt', 'LogData',
+                             f' {form} \n {fech}', contents.sha, branch='main')
+            messagebox.showinfo(
+                message=('Formulario Eviado'))
 # -------------------------------------------------------------------------------------
 
         # -------------- DOWLOAD RESPOSES----------------------------
@@ -365,6 +349,6 @@ submi = customtkinter.CTkButton(
     frame, height=28, width=241, text='login', command=panel, font=('Bahnschrift SemiBold', 20))
 submi.place(x=50, y=396)
 # ---------------------------------------------
-# Creado por Eduardo Barboza Acosta 
+# Creado por Eduardo Barboza Acosta
 # Rev 2.0.0
 ventana.mainloop()
