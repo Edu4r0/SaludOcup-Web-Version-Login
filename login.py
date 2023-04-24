@@ -124,7 +124,7 @@ def panel():
         def unpload_image():
 
             # Autenticación con un token de acceso
-            g = Github('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')
+            g = Github('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')
 
             # Obtén una referencia al repositorio y la carpeta específica en la que deseas agregar la imagen
             repo = g.get_user().get_repo("SaludOcup-Web-Version")
@@ -143,8 +143,8 @@ def panel():
         def unpload_form():
             form = form_unpload.get()
             fech = fecha1.get()
-
-            g = Github('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')
+            
+            g = Github('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')
             repo = g.get_user().get_repo("SaludOcup-Web-Version")
             contents = repo.get_contents("LogData/LogData.txt")
             repo.update_file('LogData/LogData.txt', 'LogData',
